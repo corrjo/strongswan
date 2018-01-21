@@ -1,0 +1,15 @@
+---
+
+- name: update yum cache
+  yum: >
+    update_cache=true
+    name=*
+    state=latest
+  when: ansible_distribution == 'CentOS'
+
+- name: update apt cache
+  apt: >
+    update_cache=true
+    name=*
+    state=latest
+  when: ansible_os_family == 'Debian'

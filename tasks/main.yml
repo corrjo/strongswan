@@ -1,0 +1,14 @@
+---
+# tasks file for strongswan
+- name: update repo cache
+  include: repos.yml
+
+- name: install strongswan
+  package: >
+    state=present
+    name={{item}}
+  with_items:
+    - strongswan
+    - strongswan-plugin-eap-mschapv2
+    - moreutils
+    - iptables-persistent
