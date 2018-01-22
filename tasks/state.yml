@@ -1,0 +1,22 @@
+---
+
+- name: check if root cert exists
+  stat:
+    path: /etc/ipsec.d/certs/server-root-key.pem
+  register: cert
+
+- name: check if ca cert exists
+  stat:
+    path: /etc/ipsec.d/certs/server-root-ca.pem
+  register: cacert
+
+- name: check if vpn private key exists
+  stat:
+    path: /etc/ipsec.d/certs/vpn-server-key.pem
+  register: vpnkey
+
+- name: check if signed cert exists
+  stat:
+    path: /etc/ipsec.d/certs/vpn-server-cert.pem
+  register: signedcert
+

@@ -1,7 +1,13 @@
 ---
 # tasks file for strongswan
+- name: get Public IP
+  ipify_facts:
+
 - name: update repo cache
-  include: repos.yml
+  include: "{{item}}"
+  with_items:
+    - repos.yml
+    - state.yml
 
 - name: install strongswan
   package: >
@@ -12,3 +18,74 @@
     - strongswan-plugin-eap-mschapv2
     - moreutils
     - iptables-persistent
+
+- name: create cert directory
+  file: >
+    path=/etc/ipsec.d/certs
+    state=directory
+    mode=0600
+
+- name: generate cert
+  shell: ipsec pki --gen --type rsa --size 4096 --outform pem > server-root-key.pem
+  args:
+    chdir: /etc/ipsec.d/certs/
+  when: cert.stat.exists == False
+
+- name: sign ca key
+  shell: >
+    ipsec pki --self --ca --lifetime 3650 \
+    --in server-root-key.pem \
+    --type rsa --dn "C=US, O=VPN Server, CN=VPN Server Root CA" \
+    --outform pem > server-root-ca.pem
+  args:
+    chdir: /etc/ipsec.d/certs/
+  when: cacert.stat.exists == False
+
+- name: generage vpn private key
+  shell: ipsec pki --gen --type rsa --size 4096 --outform pem > vpn-server-key.pem
+  args:
+    chdir: /etc/ipsec.d/certs/
+  when: vpnkey.stat.exists == false
+
+- name: sign vpn cert
+  shell: >
+    ipsec pki --pub --in vpn-server-key.pem \
+    --type rsa | ipsec pki --issue --lifetime 1825 \
+    --cacert server-root-ca.pem \
+    --cakey server-root-key.pem \
+    --dn "C=US, O=VPN Server, CN=corrjo_vpn" \
+    --san {{ipify_public_ip}} \
+    --flag serverAuth --flag ikeIntermediate \
+    --outform pem > vpn-server-cert.pem
+  args:
+    chdir: /etc/ipsec.d/certs/
+  when: signedcert.stat.exists == false
+
+- name: lock down certs
+  file: >
+    path=/etc/ipsec.d/certs
+    group=root
+    owner=root
+    recurse=true
+    mode=0600
+
+- name: add ipsec config
+  template: >
+    src=etc/ipsec.conf.j2
+    dest=/etc/ipsec.conf
+
+- name: add user config
+  template: >
+    src=etc/ipsec.secrets.j2
+    dest=/etc/ipsec.secrets
+
+- name: reload ipsec
+  command: ipsec reload
+
+- name: update firewall rules
+  include: firewall.yml
+  tags:
+    - firewall
+
+- name: rebooting
+  command: reboot

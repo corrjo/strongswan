@@ -1,5 +1,5 @@
 ---
-- hosts: vagrantbox
+- hosts: all
   remote_user: root
   roles:
     - strongswan
