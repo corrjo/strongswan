@@ -53,7 +53,7 @@
     --type rsa | ipsec pki --issue --lifetime 1825 \
     --cacert server-root-ca.pem \
     --cakey server-root-key.pem \
-    --dn "C=US, O=VPN Server, CN=corrjo_vpn" \
+    --dn "C=US, O=VPN Server, CN={{ipify_public_ip}}" \
     --san {{ipify_public_ip}} \
     --flag serverAuth --flag ikeIntermediate \
     --outform pem > vpn-server-cert.pem
