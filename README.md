@@ -3,6 +3,10 @@ StrongSwan
 
 Bring up a vpn instance
 
+Git Clone and:
+Add your keykair and sg to the vagrantfile
+vagrant up to bring up a vpn instance in aws
+
 
 Role Variables
 --------------
