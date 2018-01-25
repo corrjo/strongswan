@@ -2,3 +2,5 @@
 # defaults file for strongswan
 username: username
 password: password
+email:
+  address: something@someplace.com

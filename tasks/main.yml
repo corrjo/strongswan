@@ -3,7 +3,7 @@
 - name: get Public IP
   ipify_facts:
 
-- name: update repo cache
+- name: update repo cache and get state of certs
   include: "{{item}}"
   with_items:
     - repos.yml
@@ -17,6 +17,8 @@
     - strongswan
     - strongswan-plugin-eap-mschapv2
     - moreutils
+    - postfix
+    - mailutils
     - iptables-persistent
 
 - name: create cert directory
@@ -82,10 +84,28 @@
 - name: reload ipsec
   command: ipsec reload
 
+- name: send ip and pub cert to email address
+  mail:
+    host: localhost
+    port: 25
+    to: "{{email.address}}"
+    subject: VPN INSTALL
+    body: A new VPN instance has been launched at "{{ipify_public_ip}}"
+    attach: /etc/ipsec.d/certs/server-root-ca.pem
+  tags:
+    - email
+
 - name: update firewall rules
   include: firewall.yml
   tags:
     - firewall
 
 - name: rebooting
-  command: reboot
+  shell: reboot
+  async: 0
+  poll: 0
+
+- name: Wait for the server to finish rebooting
+  become: no
+  local_action: wait_for host= "{{inventory_hostname}}" search_regex=OpenSSH port=22 timeout=300
+
