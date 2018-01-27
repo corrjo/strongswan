@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
     aws.associate_public_ip = true
     aws.security_groups = ["SOME_SG_YOU_CREATED"]
     aws.instance_type = "c5.large"
-    aws.subnet_id = "subnet-ed8284b4"
+    aws.subnet_id = "YOUR_SUBNET_ID"
 
     override.ssh.username = "ubuntu"
     override.ssh.private_key_path = "~/.ssh/KEYPAIR"

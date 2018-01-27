@@ -9,10 +9,12 @@ Vagrant
 
 Using vagrant you can quickly bring your own personal vpn instance in AWS
 
+__requires ansible, vagrant, and the vagrant-aws plugin__
+
 To bring up a strongswan vpn instance in aws simply:
 - Clone this repo
-- Add your keypair and security group to the vagrantfile
-- Set vars
+- Add your keypair, security group, and subnet id to the vagrantfile
+- Set Role vars
 - Vagrant up
 
 Role Variables
