@@ -1,15 +1,19 @@
+Role Description
+================
 
+Sets up an instance with strongswan VPN and sends an email
+with the public IP and public cert for ipsec.
 
 Vagrant
 -------
 
-Bring up a vpn instance
+Using vagrant you can quickly bring your own personal vpn instance in AWS
 
-  Git Clone and:
-    - Add your keypair and security group to the vagrantfile
-    - set vars
-    - vagrant up to bring up a vpn instance in aws
-
+To bring up a strongswan vpn instance in aws simply:
+- Clone this repo
+- Add your keypair and security group to the vagrantfile
+- Set vars
+- Vagrant up
 
 Role Variables
 --------------
@@ -18,10 +22,8 @@ Role Variables
         password: SOME_PASSWORD
         email.address: MYEMAIL@SOMEDOMAIN.COM
 
-
 Example Playbook
 ----------------
-
 
     - hosts: servers
       roles:
@@ -36,7 +38,4 @@ License
 -------
 
 BSD
-
-Author Information
-------------------
 
