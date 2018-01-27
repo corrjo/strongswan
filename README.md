@@ -1,31 +1,36 @@
-StrongSwan
-=========
+
+
+Vagrant
+-------
 
 Bring up a vpn instance
 
-Git Clone and:
-Add your keykair and sg to the vagrantfile
-vagrant up to bring up a vpn instance in aws
+  Git Clone and:
+    - Add your keypair and security group to the vagrantfile
+    - set vars
+    - vagrant up to bring up a vpn instance in aws
 
 
 Role Variables
 --------------
 
-username: SOME_USERNAME
-password: SOME_PASSWORD
+        username: SOME_USERNAME
+        password: SOME_PASSWORD
+        email.address: MYEMAIL@SOMEDOMAIN.COM
 
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
-         - strongswan
+        - strongswan
       vars:
         username: john
         password: password
+        email:
+          address: something@someplace.com
 
 License
 -------

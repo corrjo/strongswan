@@ -102,7 +102,7 @@
 
 - name: rebooting
   shell: reboot
-  async: 0
+  async: 30
   poll: 0
 
 - name: Wait for the server to finish rebooting
