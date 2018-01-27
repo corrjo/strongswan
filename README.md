@@ -46,7 +46,7 @@ To use with macOS:
 - In keychain double click the cert and set IPsec trust to **Always Trust**
 - Create a new VPN (IKEv2)
 - Put the public ip from the email in the "Server Address and "Remote ID" Fields
-- Set "Authentication Settings to "Username" and put it the username and password you set in your vars
+- Set Authentication Settings to "Username" and put it the username and password you set in your vars
 - Save settings and connect
 
 License
